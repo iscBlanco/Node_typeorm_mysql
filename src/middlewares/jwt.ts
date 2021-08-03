@@ -10,7 +10,7 @@ export const checkJwt = (req: express.Request, res: express.Response, next: expr
         jwtPayload = <any>jwt.verify(token, config.jwtSecret)
         
         res.locals.jwtPayload = jwtPayload;
-        console.log("SI SE SETEO")
+        console.log(res.locals.jwtPayload)
      
     }
     catch(e){

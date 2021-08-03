@@ -1,12 +1,12 @@
 import { getRepository } from "typeorm";
-import * as express from "express"
+import {Request, Response} from "express"
 import {User} from "../entity/User"
 import * as jwt from 'jsonwebtoken'
 import config from "../config/config";
 import { validate } from "class-validator";
 
 class AuthController {
-    static login = async (req: express.Request , res: express.Response ) => {
+    static login = async (req: Request , res: Response ) => {
         const {username, password} = req.body;
         
         if(!(username && password)){
@@ -31,10 +31,9 @@ class AuthController {
 
         res.json({message:'OK', token: token});
     };
-    static changePassword = async(res:express.Response, req:express.Request)=>{
-        
+
+    static changePassword = async(req: Request, res:Response) =>{
         const {userId, username} = res.locals.jwtPayload;
-        
         const { oldPassword, newPassword } = req.body;
 
         //si algun valor falta mandara un error tipo 400
@@ -45,7 +44,7 @@ class AuthController {
          let user : User;
          try{
             user = await userRepository.findOneOrFail(userId);
-         }
+         }  
          catch(e){
             res.status(400).json({message:'Something went wrong.'})
          }
